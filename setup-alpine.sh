@@ -280,14 +280,14 @@ fi
 group 'Bind filesystems into chroot'
 
 mkdir -p proc
-mount -v -t proc none proc
-mount_bind /dev dev
-mount_bind /sys sys
-mount_bind "$RUNNER_HOME/work" "${RUNNER_HOME#/}/work"
+sudo mount -v -t proc none proc
+sudo mount_bind /dev dev
+sudo mount_bind /sys sys
+sudo mount_bind "$RUNNER_HOME/work" "${RUNNER_HOME#/}/work"
 
 # Some systems (Ubuntu?) symlinks /dev/shm to /run/shm.
 if [ -L /dev/shm ] && [ -d /run/shm ]; then
-	mount_bind /run/shm run/shm
+	sudo mount_bind /run/shm run/shm
 fi
 
 for vol in $INPUT_VOLUMES; do
@@ -295,7 +295,7 @@ for vol in $INPUT_VOLUMES; do
 	src=${vol%%:*}
 	dst=${vol#*:}
 
-	mount_bind "$src" "${dst#/}"
+	sudo mount_bind "$src" "${dst#/}"
 done
 
 
